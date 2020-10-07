@@ -7,12 +7,19 @@ using Photon.Realtime;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+
     // Start is called before the first frame update
+    // (0, 1.5, 3) (0, 1.5, 3) (0, 1.5, 3) (0, 1.5, 3) (0, 1.5, 3)
+    // (0, 1.5, 3) (0, 1.5, 3) (0, 1.5, 3) (0, 1.5, 3) (0, 1.5, 3)
     void Start()
     {
+        if(PhotonNetwork.IsMasterClient){
         Vector3 position = new Vector3(Random.Range(0, 20), (1.5f) , Random.Range(0, 20));
         PhotonNetwork.Instantiate("Player", position, Quaternion.identity);
         Cursor.visible = false;
+        }
+        
+        
     }
 
     // Update is called once per frame

@@ -9,19 +9,37 @@ public class PlayerControler : MonoBehaviour
     public GameObject myCamera;
     public float speed = 10f;
     private PhotonView photonView;
+    private PlayerInfo playerInfo;
+    private bool onPause = false;
 
     private void Start()
     {
         photonView = GetComponent<PhotonView>();
-        if (photonView.IsMine)
-        myCamera.SetActive(true);
+        playerInfo = GetComponent<PlayerInfo>();
+        controller = GetComponent<CharacterController>();
+
     }
 
 
     void Update()
 
     {
-        if (!photonView.IsMine) return;
+        if (!playerInfo.isMine) return;
+
+        if(Input.GetKey(KeyCode.Escape)){
+            if(onPause)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false; 
+                onPause = false;
+            }
+            else{
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true; 
+                onPause = true;
+            }
+        }
+        
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");

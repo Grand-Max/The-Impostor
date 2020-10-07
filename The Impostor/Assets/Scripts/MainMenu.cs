@@ -12,7 +12,8 @@ public class MainMenu : MonoBehaviour
 
     public void LoadTestMap()
     {
-        SceneManager.LoadScene("SingleMap");
+        //SceneManager.LoadScene("SingleMap");
+        SceneManager.LoadScene("TestMap");
     }
 
     public void LoadSetting()

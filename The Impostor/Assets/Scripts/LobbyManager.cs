@@ -12,7 +12,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.NickName = "PLayer " + Random.Range(1000, 9999);
         PhotonNetwork.AutomaticallySyncScene = true;
-        PhotonNetwork.GameVersion = "0.0.01";
+        PhotonNetwork.GameVersion = "0.0.02";
         PhotonNetwork.ConnectUsingSettings();
         
     }
@@ -27,7 +27,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
-        PhotonNetwork.CreateRoom(null, new Photon.Realtime.RoomOptions { MaxPlayers = 10 } );
+        PhotonNetwork.CreateRoom(null, new Photon.Realtime.RoomOptions {
+             MaxPlayers = 10,
+             PublishUserId = true } );
     }
     public void JoinRoom()
     {
@@ -40,6 +42,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.LoadLevel("TestMap");
+        PhotonNetwork.LoadLevel("Lobby");
     }
 }
