@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+
+// Player Controler for multuplayer
 public class PlayerControler : MonoBehaviour
 {
     public CharacterController controller;

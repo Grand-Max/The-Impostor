@@ -2,46 +2,63 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
+using Photon.Realtime;
+using UnityEngine.SceneManagement;
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-
-    public GameObject createBtn, joinBtn;
+    bool fistTime = true;
     // Start is called before the first frame update
     void Start()
     {
-        PhotonNetwork.NickName = "PLayer " + Random.Range(1000, 9999);
-        PhotonNetwork.AutomaticallySyncScene = true;
-        PhotonNetwork.GameVersion = "0.0.02";
-        PhotonNetwork.ConnectUsingSettings();
+
+         Vector3 position = new Vector3(Random.Range(0, 20), (1.5f), Random.Range(0, 20));
+        GameObject go = PhotonNetwork.Instantiate("Player", position, Quaternion.identity);
+    
+        Cursor.visible = false; 
         
+
     }
 
-    public override void OnConnected()
-    {
-        createBtn.SetActive(true);
-        joinBtn.SetActive(true);
-    }
-
+    IEnumerator ExecuteAfterTime(float time)
+ {
+     yield return new WaitForSeconds(time);
+ 
+    PhotonNetwork.LoadLevel("MultiplayerMap1");
+ }
     
 
-    public void CreateRoom()
+    // Update is called once per frame
+    void LateUpdate()
     {
-        PhotonNetwork.CreateRoom(null, new Photon.Realtime.RoomOptions {
-             MaxPlayers = 10,
-             PublishUserId = true } );
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2 && PhotonNetwork.IsMasterClient && fistTime)
+        {
+
+            StartCoroutine(ExecuteAfterTime(3));
+            fistTime = false;
+
+        }
     }
-    public void JoinRoom()
+
+    public void Leave()
     {
-        PhotonNetwork.JoinRandomRoom();
+        PhotonNetwork.LeaveRoom();
     }
-    public override void OnConnectedToMaster()
+
+    public override void OnLeftRoom()
     {
+        //This player left room
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        
+        Debug.Log("OnPlayerEnteredRoom");
         
     }
 
-    public override void OnJoinedRoom()
+    public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        PhotonNetwork.LoadLevel("Lobby");
     }
 }
+
